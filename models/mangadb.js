@@ -1,46 +1,48 @@
 "use strict";
-
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class user extends Model {
+  class mangaDb extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // this.belongsToMany(models.mangaDb),
+      // mangaDb.belongsToMany(models.user),
       //   {
-      //     through: 'userMangas',
-      //     foreignKey: 'userId',
+      //     through: 'userManga',
+      //     foreignKey: 'mangaDbId',
       //   };
     }
   }
-  user.init(
+  mangaDb.init(
     {
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      userName: {
+      title: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
       },
-      email: {
+      author: {
         type: DataTypes.STRING,
-        unique: true,
         allowNull: false,
       },
-      password: {
+      publisher: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      totalVolumes: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      imgUrl: {
         type: DataTypes.STRING,
         allowNull: false,
       },
     },
     {
       sequelize,
-      modelName: "user",
+      modelName: "mangaDb",
     }
   );
-  return user;
+  return mangaDb;
 };
