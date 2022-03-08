@@ -1,6 +1,6 @@
 const User = require("./models").user;
 const MangaDb = require("./models").mangaDb;
-const UserManga = require("./models").usermanga;
+const UserManga = require("./models").userManga;
 
 // async function getUsers() {
 //   const allUsers = await User.findAll();
@@ -9,19 +9,19 @@ const UserManga = require("./models").usermanga;
 
 // getUsers().then((users) => console.log(users));
 
-async function getArtworks() {
-  const allArtworks = await MangaDb.findAll();
-  return allArtworks.map((item) => item.get({ plain: true }));
-}
-
-getArtworks().then((artworks) => console.log(artworks));
-
-// async function getBids() {
-//   const allBids = await Bid.findAll();
-//   return allBids.map((item) => item.get({ plain: true }));
+// async function getMangas() {
+//   const allMangas = await MangaDb.findAll();
+//   return allMangas.map((item) => item.get({ plain: true }));
 // }
 
-// getBids().then((bids) => console.log(bids));
+// getMangas().then((mangaDbs) => console.log(mangaDbs));
+
+// async function getUserManga() {
+//   const userMangas = await UserManga.findAll();
+//   return userMangas.map((item) => item.get({ plain: true }));
+// }
+
+// getUserManga().then((userMangas) => console.log(userMangas));
 
 // async function getUserByPk(key) {
 //   const user = await User.findByPk(key);
@@ -39,65 +39,49 @@ getArtworks().then((artworks) => console.log(artworks));
 //   (users) => console.log(users)
 // );
 
+const getUserManga = async (id) => {
+  try {
+    const oneUserManga = await UserManga.findByPk(id, {
+      include: [{ model: User, MangaDb }],
+    });
+    console.log(oneUserManga);
+  } catch (e) {
+    console.log(e.message);
+  }
+};
+//getUserManga(3);
 
-// const getUserArtwork = async (id) => {
-//     try {
-//       const oneUser = await User.findByPk(id, {
-//         include: [{ model: Artwork }],
-//       });
-//       console.log(oneUser);
-//     } catch (e) {
-//       console.log(e.message);
-//     }
-//   };
-//   getUserArtwork(4);
+const getUserReadingManga = async () => {
+  try {
+    const readingManga = await UserManga.findByPk(
+      2,
+      { attribute: { reading: true } },
+      {
+        include: [User],
+        //attribute: [{ reading: true }],
+      }
+    );
+    console.log(readingManga);
+  } catch (e) {
+    console.log(e.message);
+  }
+};
+getUserReadingManga();
 
+const getUserCompleteCollection = async () => {
+  try {
+    const completeCollection = await UserManga.findByPk(
+      1,
+      { attribute: { complete: true } },
+      {
+        include: [User],
+        //attribute: [{ reading: true }],
+      }
+    );
+    console.log(completeCollection);
+  } catch (e) {
+    console.log(e.message);
+  }
+};
+// getUserCompleteCollection();
 
-// const getArtworkAndBid = async (id) => {
-//     try {
-//       const artworkAndBid = await Artwork.findAll({
-//         include: [{ model: Bid }],
-//       });
-//       console.log(artworkAndBid);
-//     } catch (e) {
-//       console.log(e.message);
-//     }
-//   };
-//   getArtworkAndBid(1);
-
-// async function getArtists() {
-//   const allArtists = await User.findAll(
-//     {where: {
-//       isArtist: true
-//       }}
-//   );
-//   return allArtists.map((user) => user.get({ plain: true }));
-// }
-// getArtists().then((users) => console.log(users));
-
-
-// const getUserArtworkAndBid = async (id) => {
-//   try {
-//     const oneUser = await User.findByPk(id, {
-//       include: [{ model: Artwork, include: [{ model: Bid }] }],
-//     });
-//     console.log(oneUser);
-//   } catch (e) {
-//     console.log(e.message);
-//   }
-// };
-// getUserArtworkAndBid(4);
-
-
-// const getArtworkBid = async (id) => {
-//     try {
-//       const artworkAndBid = await Artwork.findByPk(id, {
-//         include: [{ model: Bid }],
-//       });
-//       console.log(artworkAndBid);
-//         } catch (e) {
-//           console.log(e.message);
-//         }
-//       };
-//       getArtworkBid(4);
-      
