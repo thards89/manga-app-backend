@@ -40,27 +40,52 @@ router.get("/:mangaId", async (req, res, next) => {
 });
 
 //post
-router.post("/:userId/:mangaId/userManga", async (req, res, next) => {
-  const user = await User.findByPk(req.params.userId);
-  const manga = await MangaDb.findByPk(req.params.mangaId);
+router.post("/userManga", async (req, res, next) => {
   
-  const { volumesOwned, reading, lastVolumeRead, collectionComplete, star } =
-    req.body;
-  // if (!title || !author || !publisher || !totalVolumes || !imgUrl) {
+
+  const {userId, mangaId, title, author, publisher, totalVolumes, imgUrl, volumesOwned, reading, lastVolumeRead, collectionComplete, star } =
+    req.body;  
+    //
+  //   if (!title || !author || !publisher || !totalVolumes || !imgUrl) {
   //   return res
   //     .status(400)
   //     .send("Please provide all the required information");
-  // }
+  
+      if (!mangaId) 
+      try {
+    const newManga = await MangaDb.create({
+      title,
+      author,
+      publisher,
+      totalVolumes,
+      imgUrl,
+    })
 
-    try {
     const newUserManga = await UserManga.create({
       volumesOwned,
       reading,
       lastVolumeRead,
-      collectionComplete,
+      collectionComplete: volumesOwned === totalVolumes ? true : false,
       star,
-      userId: user.id,
-      mangaDbId: manga.id,})
+      userId,
+      mangaDbId: newManga.id,
+    });
+    res.status(201).send(newUserManga);
+  } 
+      catch (e) {
+    console.log(e.message);
+  } 
+    else 
+      try {
+    const newUserManga = await UserManga.create({
+      volumesOwned,
+      reading,
+      lastVolumeRead,
+      collectionComplete: volumesOwned === totalVolumes ? true : false,
+      star,
+      userId,
+      mangaDbId: mangaId,
+    });
    
     res.status(201).send(newUserManga);
   } catch (e) {
@@ -68,31 +93,6 @@ router.post("/:userId/:mangaId/userManga", async (req, res, next) => {
   }
 });
 
-router.post("/registerNewManga", async (req, res, next) => {
-  
-  const { title, author, publisher, totalVolumes, imgUrl } = req.body;
-  
-  if (!title || !author || !publisher || !totalVolumes || !imgUrl) {
-    return res
-      .status(400)
-      .send("Please provide all the required information");
-  }
-
-  try {
-    const newManga = await MangaDb.create({
-      title,
-      author,
-      publisher,
-      totalVolumes,
-      imgUrl,
-    });
-
-
-    res.status(201).send(newManga);
-  } catch (e) {
-    console.log(e.message);
-  }
-});
 
 //updates
 router.patch("/:mangaId", async (req, res) => {
@@ -106,6 +106,7 @@ router.patch("/:mangaId", async (req, res) => {
     }
   } catch (error) {
     res.status(400).send("Something went wrong");
+    console.log(e.message);
   }
 });
 
@@ -123,22 +124,33 @@ router.patch("/user/:userId", async (req, res) => {
   }
 });
 
-router.patch("/:userId/:mangaId/UpdateUserManga", async (req, res) => {
-  try {
-    const userId = await User.findByPk(req.params.userId);
-    const mangaId = await MangaDb.findByPk(req.params.mangaId);
-    const userMangaToBeUpdated = await UserManga.find({
-      where: { userId:userId, mangaId:mangaId },
+router.put("/updateusermanga", async (req, res) => {
   
-    });
+  try {
+    const { userId, mangaDbId, volumesOwned, reading, lastVolumeRead, collectionComplete, star } =
+      req.body;
 
-    if (!userId || !mangaId) {
-      res.status(400).send("User or manga does not exist");
-    } else {
-      const userMangaUpdated = await userMangaToBeUpdated.update(req.body);
-      res.send(userMangaUpdated);
-    }
-  } catch (error) {
+    const userMangaToBeUpdated = await UserManga.findOne({
+      where: {
+        userId,
+        mangaDbId,
+      },
+    });
+    // console.log("userMangaToBeUpdated", userMangaToBeUpdated);
+    const updatedManga = await userMangaToBeUpdated.update({
+      volumesOwned,
+      reading,
+      lastVolumeRead,
+      collectionComplete,
+      star,
+      userId,
+      mangaDbId,
+    });
+    // console.log("updatedManga", updatedManga);
+
+    res.status(201).send(updatedManga);
+    
+  } catch (error) { console.log(error)
     res.status(400).send("Something went wrong");
   }
 });
