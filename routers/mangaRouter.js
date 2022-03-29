@@ -6,6 +6,7 @@ const MangaDb = require("../models").mangaDb;
 const UserManga = require("../models").userManga;
 const User = require("../models").user;
 
+//get
 router.get("/", async (req, res, next) => {
   try {
     const mangas = await MangaDb.findAll();
@@ -16,119 +17,18 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:mangaId", async (req, res, next) => {
-  try {
-    const id = parseInt(req.params.mangaId);
-    const mangaById = await MangaDb.findByPk(id, {
-      include: {
-        model: User,
-        through: {
-          attributes: [
-            "volumesOwned",
-            "reading",
-            "lastVolumeRead",
-            "collectionComplete",
-            "star",
-          ],
-        },
-      },
-    });
-    res.status(200).send(mangaById);
-  } catch (e) {
-    console.log(e.message);
-  }
-});
-
-//post
-router.post("/userManga", async (req, res, next) => {
-  
-
-  const {userId, mangaId, title, author, publisher, totalVolumes, imgUrl, volumesOwned, reading, lastVolumeRead, collectionComplete, star } =
-    req.body;  
-    //
-  //   if (!title || !author || !publisher || !totalVolumes || !imgUrl) {
-  //   return res
-  //     .status(400)
-  //     .send("Please provide all the required information");
-  
-      if (!mangaId) 
-      try {
-    const newManga = await MangaDb.create({
-      title,
-      author,
-      publisher,
-      totalVolumes,
-      imgUrl,
-    })
-
-    const newUserManga = await UserManga.create({
-      volumesOwned,
-      reading,
-      lastVolumeRead,
-      collectionComplete: volumesOwned === totalVolumes ? true : false,
-      star,
-      userId,
-      mangaDbId: newManga.id,
-    });
-    res.status(201).send(newUserManga);
-  } 
-      catch (e) {
-    console.log(e.message);
-  } 
-    else 
-      try {
-    const newUserManga = await UserManga.create({
-      volumesOwned,
-      reading,
-      lastVolumeRead,
-      collectionComplete: volumesOwned === totalVolumes ? true : false,
-      star,
-      userId,
-      mangaDbId: mangaId,
-    });
-   
-    res.status(201).send(newUserManga);
-  } catch (e) {
-    console.log(e.message);
-  }
-});
-
-
-//updates
-router.patch("/:mangaId", async (req, res) => {
-  try {
-    const mangaToBeUpdated = await MangaDb.findByPk(req.params.mangaId);
-    if (!mangaToBeUpdated) {
-      res.status(400).send("Manga does not exist");
-    } else {
-      const mangaUpdated = await mangaToBeUpdated.update(req.body);
-      res.send(mangaUpdated);
-    }
-  } catch (error) {
-    res.status(400).send("Something went wrong");
-    console.log(e.message);
-  }
-});
-
-router.patch("/user/:userId", async (req, res) => {
-  try {
-    const userToBeUpdated = await User.findByPk(req.params.userId);
-    if (!userToBeUpdated) {
-      res.status(400).send("User does not exist");
-    } else {
-      const userUpdated = await userToBeUpdated.update(req.body);
-      res.send(userUpdated);
-    }
-  } catch (error) {
-    res.status(400).send("Something went wrong");
-  }
-});
-
+//update
 router.put("/updateusermanga", async (req, res) => {
-  
   try {
-    const { userId, mangaDbId, volumesOwned, reading, lastVolumeRead, collectionComplete, star } =
-      req.body;
+    const {
+      userId,
+      mangaDbId,
+      volumesOwned,
+      reading,
+      lastVolumeRead,
+      collectionComplete,
+      star,
+    } = req.body;
 
     const userMangaToBeUpdated = await UserManga.findOne({
       where: {
@@ -149,10 +49,86 @@ router.put("/updateusermanga", async (req, res) => {
     // console.log("updatedManga", updatedManga);
 
     res.status(201).send(updatedManga);
-    
-  } catch (error) { console.log(error)
+  } catch (error) {
+    console.log(error);
     res.status(400).send("Something went wrong");
   }
+});
+
+//post
+router.post("/userManga", async (req, res, next) => {
+  
+
+  const {userId, mangaId, title, author, publisher, totalVolumes, imgUrl, volumesOwned, reading, lastVolumeRead, collectionComplete, star } =
+    req.body;  
+    
+    // if (mangaId === mangaDbId) {
+    //   return res
+    //     .status(400)
+    //     .send(
+    //       "Manga already registered, please use Update option on My Collection page"
+    //     );
+    // }
+
+      if (volumesOwned > totalVolumes || lastVolumeRead > volumesOwned || star > 6) {
+        return res.status(400).send("Please provide the amounts as required")
+      }
+      try{
+
+           if (!mangaId) {
+             const newManga = await MangaDb.create({
+               title,
+               author,
+               publisher,
+               totalVolumes,
+               imgUrl,
+             });
+
+             const newUserManga = await UserManga.create({
+               volumesOwned,
+               reading,
+               lastVolumeRead,
+               collectionComplete: volumesOwned === totalVolumes,
+               star,
+               userId,
+               mangaDbId: newManga.id,
+             });
+            
+           } else {
+             
+             //usermanga findOne --> where user id and mangadbId . if they exist the ame oone. if it exist dont do the rest, dont create
+              //send 400 error
+             const newUserManga = await UserManga.create({
+               volumesOwned,
+               reading,
+               lastVolumeRead,
+               collectionComplete: volumesOwned === totalVolumes ? true : false,
+               star,
+               userId,
+               mangaDbId: mangaId,
+             });            
+           }
+            const user = await User.findByPk(userId, {
+              include: {
+                model: MangaDb,
+                through: {
+                  attributes: [
+                    "volumesOwned",
+                    "reading",
+                    "lastVolumeRead",
+                    "collectionComplete",
+                    "star",
+                  ],
+                },
+              },
+            });
+      console.log(user)
+      res.send(user.mangaDbs)
+
+      } catch (error) {
+        next(error)
+      }
+    
 });
 
 //DELETE a specific character by id, this route is protected by your authorization middleware
@@ -184,6 +160,41 @@ router.delete("/delete/:mangaId", async (req, res) => {
     res.send("Something went wrong");
   }
 });
+
+module.exports = router;
+
+// //updates
+// router.patch("/:mangaId", async (req, res) => {
+//   try {
+//     const mangaToBeUpdated = await MangaDb.findByPk(req.params.mangaId);
+//     if (!mangaToBeUpdated) {
+//       res.status(400).send("Manga does not exist");
+//     } else {
+//       const mangaUpdated = await mangaToBeUpdated.update(req.body);
+//       res.send(mangaUpdated);
+//     }
+//   } catch (error) {
+//     res.status(400).send("Something went wrong");
+//     console.log(e.message);
+//   }
+// });
+
+// router.patch("/user/:userId", async (req, res) => {
+//   try {
+//     const userToBeUpdated = await User.findByPk(req.params.userId);
+//     if (!userToBeUpdated) {
+//       res.status(400).send("User does not exist");
+//     } else {
+//       const userUpdated = await userToBeUpdated.update(req.body);
+//       res.send(userUpdated);
+//     }
+//   } catch (error) {
+//     res.status(400).send("Something went wrong");
+//   }
+// });
+
+
+
 
 // router.get("/user/:id", async (req, res, next) => {
 //   try {
@@ -220,6 +231,31 @@ router.delete("/delete/:mangaId", async (req, res) => {
 //     console.log(e.message);
 //     next(e);
 //   }
+// // });
+
+
+
+// router.get("/:mangaId", async (req, res, next) => {
+//   try {
+//     const id = parseInt(req.params.mangaId);
+//     const mangaById = await MangaDb.findByPk(id, {
+//       include: {
+//         model: User,
+//         through: {
+//           attributes: [
+//             "volumesOwned",
+//             "reading",
+//             "lastVolumeRead",
+//             "collectionComplete",
+//             "star",
+//           ],
+//         },
+//       },
+//     });
+//     res.status(200).send(mangaById);
+//   } catch (e) {
+//     console.log(e.message);
+//   }
 // });
 
-module.exports = router;
+
