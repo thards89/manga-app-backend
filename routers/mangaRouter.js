@@ -36,6 +36,7 @@ router.put("/updateusermanga", async (req, res) => {
         mangaDbId,
       },
     });
+
     // console.log("userMangaToBeUpdated", userMangaToBeUpdated);
     const updatedManga = await userMangaToBeUpdated.update({
       volumesOwned,
@@ -46,9 +47,26 @@ router.put("/updateusermanga", async (req, res) => {
       userId,
       mangaDbId,
     });
+
+    const user = await User.findByPk(userId, {
+      include: {
+        model: MangaDb,
+        through: {
+          attributes: [
+            "volumesOwned",
+            "reading",
+            "lastVolumeRead",
+            "collectionComplete",
+            "star",
+          ],
+        },
+      },
+    });
+    
     // console.log("updatedManga", updatedManga);
 
-    res.status(201).send(updatedManga);
+    // res.status(201).send(updatedManga);
+    res.send(user.mangaDbs)
   } catch (error) {
     console.log(error);
     res.status(400).send("Something went wrong");
@@ -88,7 +106,7 @@ router.post("/userManga", async (req, res, next) => {
                volumesOwned,
                reading,
                lastVolumeRead,
-               collectionComplete: volumesOwned === totalVolumes,
+               collectionComplete: volumesOwned === totalVolumes ? true : false,
                star,
                userId,
                mangaDbId: newManga.id,
