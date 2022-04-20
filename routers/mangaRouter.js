@@ -62,11 +62,11 @@ router.put("/updateusermanga", async (req, res) => {
         },
       },
     });
-    
+
     // console.log("updatedManga", updatedManga);
 
     // res.status(201).send(updatedManga);
-    res.send(user.mangaDbs)
+    res.send(user.mangaDbs);
   } catch (error) {
     console.log(error);
     res.status(400).send("Something went wrong");
@@ -75,78 +75,75 @@ router.put("/updateusermanga", async (req, res) => {
 
 //post
 router.post("/userManga", async (req, res, next) => {
-  
+  const {
+    userId,
+    mangaId,
+    title,
+    author,
+    publisher,
+    totalVolumes,
+    imgUrl,
+    volumesOwned,
+    reading,
+    lastVolumeRead,
+    collectionComplete,
+    star,
+    mangaDbId,
+  } = req.body;
 
-  const {userId, mangaId, title, author, publisher, totalVolumes, imgUrl, volumesOwned, reading, lastVolumeRead, collectionComplete, star } =
-    req.body;  
-    
-    // if (mangaId === mangaDbId) {
-    //   return res
-    //     .status(400)
-    //     .send(
-    //       "Manga already registered, please use Update option on My Collection page"
-    //     );
-    // }
+  if (volumesOwned > totalVolumes || lastVolumeRead > volumesOwned) {
+    return res.status(400).send("Please provide the amounts as required");
+  }
 
-      if (volumesOwned > totalVolumes || lastVolumeRead > volumesOwned || star > 6) {
-        return res.status(400).send("Please provide the amounts as required")
-      }
-      try{
+  try {
+    if (!mangaId) {
+      const newManga = await MangaDb.create({
+        title,
+        author,
+        publisher,
+        totalVolumes,
+        imgUrl,
+      });
 
-           if (!mangaId) {
-             const newManga = await MangaDb.create({
-               title,
-               author,
-               publisher,
-               totalVolumes,
-               imgUrl,
-             });
-
-             const newUserManga = await UserManga.create({
-               volumesOwned,
-               reading,
-               lastVolumeRead,
-               collectionComplete: volumesOwned === totalVolumes ? true : false,
-               star,
-               userId,
-               mangaDbId: newManga.id,
-             });
-            
-           } else {
-             
-             //usermanga findOne --> where user id and mangadbId . if they exist the ame oone. if it exist dont do the rest, dont create
-              //send 400 error
-             const newUserManga = await UserManga.create({
-               volumesOwned,
-               reading,
-               lastVolumeRead,
-               collectionComplete: volumesOwned === totalVolumes ? true : false,
-               star,
-               userId,
-               mangaDbId: mangaId,
-             });            
-           }
-            const user = await User.findByPk(userId, {
-              include: {
-                model: MangaDb,
-                through: {
-                  attributes: [
-                    "volumesOwned",
-                    "reading",
-                    "lastVolumeRead",
-                    "collectionComplete",
-                    "star",
-                  ],
-                },
-              },
-            });
-      console.log(user)
-      res.send(user.mangaDbs)
-
-      } catch (error) {
-        next(error)
-      }
-    
+      const newUserManga = await UserManga.create({
+        volumesOwned,
+        reading,
+        lastVolumeRead,
+        collectionComplete: volumesOwned === totalVolumes ? true : false,
+        star,
+        userId,
+        mangaDbId: newManga.id,
+      });
+    } else {
+      const newUserManga = await UserManga.create({
+        volumesOwned,
+        reading,
+        lastVolumeRead,
+        collectionComplete: volumesOwned === totalVolumes ? true : false,
+        star,
+        userId,
+        mangaDbId: mangaId,
+      });
+    }
+    const user = await User.findByPk(userId, {
+      include: {
+        model: MangaDb,
+        through: {
+          attributes: [
+            "volumesOwned",
+            "reading",
+            "lastVolumeRead",
+            "collectionComplete",
+            "star",
+          ],
+        },
+      },
+    });
+    console.log(user);
+    res.send(user.mangaDbs);
+  } catch (error) {
+    next(error);
+  }
 });
 
 //DELETE a specific character by id, this route is protected by your authorization middleware
@@ -211,9 +208,6 @@ module.exports = router;
 //   }
 // });
 
-
-
-
 // router.get("/user/:id", async (req, res, next) => {
 //   try {
 //     const id = parseInt(req.params.id);
@@ -251,8 +245,6 @@ module.exports = router;
 //   }
 // // });
 
-
-
 // router.get("/:mangaId", async (req, res, next) => {
 //   try {
 //     const id = parseInt(req.params.mangaId);
@@ -275,5 +267,3 @@ module.exports = router;
 //     console.log(e.message);
 //   }
 // });
-
-
