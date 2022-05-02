@@ -24,7 +24,8 @@ app.use(corsMiddleWare());
 
 // express.json():be able to read request bodies of JSON requests a.k.a. body-parser
 const bodyParserMiddleWare = express.json();
-app.use(bodyParserMiddleWare);
+// app.use(bodyParserMiddleWare);
+app.use(express.urlencoded({extended: true})); 
 
 // Routes
 app.use("/manga", mangaRouter);
