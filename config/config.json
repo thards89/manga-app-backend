@@ -10,21 +10,23 @@
     }
   },
   "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
+    "url": "postgres://gecklirnoshhdy:3070dabd10615ccbc26ca2bd927a546b967e6a486d3dc98be9a70eb981314239@ec2-52-18-116-67.eu-west-1.compute.amazonaws.com:5432/da5j02v5mqrco6",
     "dialect": "postgres",
-    "operatorsAliases": "0"
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
+    "url": "postgres://gecklirnoshhdy:3070dabd10615ccbc26ca2bd927a546b967e6a486d3dc98be9a70eb981314239@ec2-52-18-116-67.eu-west-1.compute.amazonaws.com:5432/da5j02v5mqrco6",
     "dialect": "postgres",
-    "operatorsAliases": "0"
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
   }
 }
-
-    
