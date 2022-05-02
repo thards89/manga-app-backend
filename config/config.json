@@ -1,6 +1,13 @@
 {
   "development": {
-    "url": "postgres://jxtyxekg:AVt5_zy62JF_cDAehjBYqBSFgrQc18Lu@jelani.db.elephantsql.com/jxtyxekg"
+    "url": "postgres://gecklirnoshhdy:3070dabd10615ccbc26ca2bd927a546b967e6a486d3dc98be9a70eb981314239@ec2-52-18-116-67.eu-west-1.compute.amazonaws.com:5432/da5j02v5mqrco6",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
   },
   "test": {
     "username": "root",
@@ -19,3 +26,5 @@
     "operatorsAliases": "0"
   }
 }
+
+    
