@@ -1,6 +1,6 @@
 {
   "development": {
-    "url": "postgres://gecklirnoshhdy:3070dabd10615ccbc26ca2bd927a546b967e6a486d3dc98be9a70eb981314239@ec2-52-18-116-67.eu-west-1.compute.amazonaws.com:5432/da5j02v5mqrco6",
+    "url": "postgres://soqymivrqllslr:3769bfc55719c1dd33487addce942a478d4dfd0f58a996979cd8d45a501a7018@ec2-3-248-121-12.eu-west-1.compute.amazonaws.com:5432/dfpteissq6382b",
     "dialect": "postgres",
     "dialectOptions": {
       "ssl": {
@@ -10,7 +10,7 @@
     }
   },
   "test": {
-    "url": "postgres://gecklirnoshhdy:3070dabd10615ccbc26ca2bd927a546b967e6a486d3dc98be9a70eb981314239@ec2-52-18-116-67.eu-west-1.compute.amazonaws.com:5432/da5j02v5mqrco6",
+    "url": "postgres://soqymivrqllslr:3769bfc55719c1dd33487addce942a478d4dfd0f58a996979cd8d45a501a7018@ec2-3-248-121-12.eu-west-1.compute.amazonaws.com:5432/dfpteissq6382b",
     "dialect": "postgres",
     "dialectOptions": {
       "ssl": {
@@ -20,7 +20,7 @@
     }
   },
   "production": {
-    "url": "postgres://gecklirnoshhdy:3070dabd10615ccbc26ca2bd927a546b967e6a486d3dc98be9a70eb981314239@ec2-52-18-116-67.eu-west-1.compute.amazonaws.com:5432/da5j02v5mqrco6",
+    "url": "postgres://soqymivrqllslr:3769bfc55719c1dd33487addce942a478d4dfd0f58a996979cd8d45a501a7018@ec2-3-248-121-12.eu-west-1.compute.amazonaws.com:5432/dfpteissq6382b",
     "dialect": "postgres",
     "dialectOptions": {
       "ssl": {
