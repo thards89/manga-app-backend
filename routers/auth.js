@@ -31,6 +31,7 @@ router.post("/login", async (req, res, next) => {
             "star",
           ],
         },
+        order: ["createdAt", "DESC"],
       },
     });
     if (!user || !bcrypt.compareSync(password, user.password)) {
@@ -69,7 +70,6 @@ router.post("/signup", async (req, res) => {
     const token = toJWT({ userId: newUser.id });
 
     res.status(201).json({ token, ...newUser.dataValues });
-    
   } catch (error) {
     if (error.name === "SequelizeUniqueConstraintError") {
       return res
@@ -98,6 +98,7 @@ router.get("/me", authMiddleware, async (req, res) => {
           "star",
         ],
       },
+      order: ["createdAt", "DESC"],
     },
   });
   delete req.user.dataValues["password"];
