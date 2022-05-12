@@ -20,6 +20,7 @@ router.post("/login", async (req, res, next) => {
 
     const user = await User.findOne({
       where: { email },
+      order: [[MangaDb, "createdAt", "DESC"]],
       include: {
         model: MangaDb,
         through: {
@@ -31,7 +32,6 @@ router.post("/login", async (req, res, next) => {
             "star",
           ],
         },
-        order: ["createdAt", "ASC"],
       },
     });
     if (!user || !bcrypt.compareSync(password, user.password)) {
@@ -87,19 +87,21 @@ router.post("/signup", async (req, res) => {
 router.get("/me", authMiddleware, async (req, res) => {
   // don't send back the password hash
   const user = await User.findByPk(req.user.id, {
-    include: {
-      model: MangaDb,
-      through: {
-        attributes: [
-          "volumesOwned",
-          "reading",
-          "lastVolumeRead",
-          "collectionComplete",
-          "star",
-        ],
+    order: [[MangaDb, "createdAt", "DESC"]],
+    include: [
+      {
+        model: MangaDb,
+        through: {
+          attributes: [
+            "volumesOwned",
+            "reading",
+            "lastVolumeRead",
+            "collectionComplete",
+            "star",
+          ],
+        },
       },
-      order: ["createdAt", "ASC"],
-    },
+    ],
   });
   delete req.user.dataValues["password"];
   res.status(200).send(user);
