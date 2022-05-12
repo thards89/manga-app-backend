@@ -31,7 +31,7 @@ router.post("/login", async (req, res, next) => {
             "star",
           ],
         },
-        order: ["createdAt", "DESC"],
+        order: ["createdAt", "ASC"],
       },
     });
     if (!user || !bcrypt.compareSync(password, user.password)) {
@@ -98,7 +98,7 @@ router.get("/me", authMiddleware, async (req, res) => {
           "star",
         ],
       },
-      order: ["createdAt", "DESC"],
+      order: ["createdAt", "ASC"],
     },
   });
   delete req.user.dataValues["password"];
