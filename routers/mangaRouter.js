@@ -104,7 +104,7 @@ router.post("/userManga", async (req, res, next) => {
       });
 
       const userRegisteredManga = await UserManga.findOne(
-        { where: { mangaDbId:mangaDbId } })
+        { where: { mangaDbId: mangaId, } })
 
           
       if (userRegisteredManga) {
