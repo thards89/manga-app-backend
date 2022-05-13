@@ -100,11 +100,10 @@ router.post("/userManga", async (req, res, next) => {
       const newManga = await MangaDb.create({
         title,
         author,
-        publisher,
-        totalVolumes,
-        imgUrl,
+        publishti,
       });
 
+      //find userManga by mangaDBID - se user tiver este id e pq registrado
       const newUserManga = await UserManga.create({
         volumesOwned,
         reading,
