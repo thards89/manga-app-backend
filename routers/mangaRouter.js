@@ -104,7 +104,8 @@ router.post("/userManga", async (req, res, next) => {
       });
 
       const userRegisteredManga = await UserManga.findOne(
-        { where: { mangaDbId } })
+        { where: { mangaDbId:mangaDbId } })
+
           
       if (userRegisteredManga) {
           return res.status(400).send("Manga already registered");
