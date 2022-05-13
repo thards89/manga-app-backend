@@ -177,21 +177,21 @@ router.delete("/delete/:mangaId", async (req, res) => {
 
 module.exports = router;
 
-// //updates
-// router.patch("/:mangaId", async (req, res) => {
-//   try {
-//     const mangaToBeUpdated = await MangaDb.findByPk(req.params.mangaId);
-//     if (!mangaToBeUpdated) {
-//       res.status(400).send("Manga does not exist");
-//     } else {
-//       const mangaUpdated = await mangaToBeUpdated.update(req.body);
-//       res.send(mangaUpdated);
-//     }
-//   } catch (error) {
-//     res.status(400).send("Something went wrong");
-//     console.log(e.message);
-//   }
-// });
+//updates
+router.patch("/:mangaId", async (req, res) => {
+  try {
+    const mangaToBeUpdated = await MangaDb.findByPk(req.params.mangaId);
+    if (!mangaToBeUpdated) {
+      res.status(400).send("Manga does not exist");
+    } else {
+      const mangaUpdated = await mangaToBeUpdated.update(req.body);
+      res.send(mangaUpdated);
+    }
+  } catch (e) {
+    res.status(400).send("Something went wrong");
+    console.log(e.message);
+  }
+});
 
 // router.patch("/user/:userId", async (req, res) => {
 //   try {
