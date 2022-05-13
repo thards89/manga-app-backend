@@ -103,6 +103,13 @@ router.post("/userManga", async (req, res, next) => {
         publishti,
       });
 
+      const userRegisteredManga = await UserManga.findOne(
+        { where: { mangaDbId } })
+          
+      if (userRegisteredManga) {
+          return res.status(400).send("Manga already registered");
+          }
+      
       //find userManga by mangaDBID - se user tiver este id e pq registrado
       const newUserManga = await UserManga.create({
         volumesOwned,
