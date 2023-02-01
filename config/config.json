@@ -1,6 +1,11 @@
 {
   "development": {
-    "url": "postgres://soqymivrqllslr:3769bfc55719c1dd33487addce942a478d4dfd0f58a996979cd8d45a501a7018@ec2-3-248-121-12.eu-west-1.compute.amazonaws.com:5432/dfpteissq6382b",
+    "url": "postgres://jxtyxekg:AVt5_zy62JF_cDAehjBYqBSFgrQc18Lu@jelani.db.elephantsql.com/jxtyxekg",
+    "username": "jxtyxekg",
+      "password": "AVt5_zy62JF_cDAehjBYqBSFgrQc18Lu",
+      "database": "jxtyxekg",
+      "host": "jelani.db.elephantsql.com",
+      "operatorsAliases": "0",
     "dialect": "postgres",
     "dialectOptions": {
       "ssl": {
@@ -10,7 +15,7 @@
     }
   },
   "test": {
-    "url": "postgres://soqymivrqllslr:3769bfc55719c1dd33487addce942a478d4dfd0f58a996979cd8d45a501a7018@ec2-3-248-121-12.eu-west-1.compute.amazonaws.com:5432/dfpteissq6382b",
+    "url": "postgres://jxtyxekg:AVt5_zy62JF_cDAehjBYqBSFgrQc18Lu@jelani.db.elephantsql.com/jxtyxekg",
     "dialect": "postgres",
     "dialectOptions": {
       "ssl": {
@@ -20,7 +25,12 @@
     }
   },
   "production": {
-    "url": "postgres://soqymivrqllslr:3769bfc55719c1dd33487addce942a478d4dfd0f58a996979cd8d45a501a7018@ec2-3-248-121-12.eu-west-1.compute.amazonaws.com:5432/dfpteissq6382b",
+    "url": "postgres://jxtyxekg:AVt5_zy62JF_cDAehjBYqBSFgrQc18Lu@jelani.db.elephantsql.com/jxtyxekg",
+    "username": "jxtyxekg",
+    "password": "AVt5_zy62JF_cDAehjBYqBSFgrQc18Lu",
+    "database": "jxtyxekg",
+    "host": "jelani.db.elephantsql.com",
+    "operatorsAliases": "0",
     "dialect": "postgres",
     "dialectOptions": {
       "ssl": {
