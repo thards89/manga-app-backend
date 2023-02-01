@@ -28,8 +28,8 @@ app.use(bodyParserMiddleWare);
 // app.use(express.urlencoded({extended: true})); 
 
 // Routes
-app.use("/manga", proxy(mangaRouter));
-app.use("/auth", proxy(authRouter));
+app.use("/manga", mangaRouter);
+app.use("/auth", authRouter);
 
 // POST endpoint which requires a token for testing purposes, can be removed
 app.post("/authorized_post_request", authMiddleWare, (req, res) => {
