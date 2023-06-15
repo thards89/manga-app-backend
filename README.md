@@ -1,18 +1,39 @@
-# Server template
+# My Manga Library
 
-This is a simple server template to for my students to start projects quickly.
+With this app, you can register all the manga books you have and then manage your collection and what you are currently reading.
+
+![mangaApp-2](https://github.com/thards89/manga-managment-app-front-end/assets/96024390/60c65491-02ab-4b97-9cd9-2dfd89b361b4)
+
+It is built with:<br>
+<br> 
+<b> Database: </b> <br>
+![](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white) 
+<br>
+<b> Back-end:</b>  <br>
+![](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+<br>
+<b> Front-end:</b> <br>
+![](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white)
+![](https://img.shields.io/badge/Material%20UI-007FFF?style=for-the-badge&logo=mui&logoColor=white)
+
+<b>Test User:</b> test@test.com
+<br>
+<b> Password:</b>  1234
 
 ## Table of contents:
 
+- **[Screenshots](#cra-docs)**
 - **[Setup](#setup-how-to-use-this-template)**
-- **[Endpoints](#endpoints)**
-- **[Sample requests with axios](#sample-requests-with-axios)**
-- **[Sample requests with httpie](#sample-requests-with-httpie)**
-- **[History of this project (pullrequests)](#history-of-this-project)**
+- **[Create React App docs](#cra-docs)**
 
-## SETUP How to use this template
+## Screenshots
+![manga-libray](https://github.com/thards89/manga-managment-app-front-end/assets/96024390/a99075e6-cf2c-47e8-bf57-0e1475af08b4)
 
-1. Create a new project based on this template using the `Use this template` button
+
+## SETUP How to check this project
+
+1. Create a new project based on this template using the `Use this template` button (optional)
 
 ![HOW_TO_USE](https://user-images.githubusercontent.com/20372832/77003323-70966180-695d-11ea-8abe-b362d57135f3.gif)
 
@@ -34,109 +55,12 @@ cd YOUR_PROJECT_NAME
 npm install
 ```
 
-5. Configure your database in `config/config.json`
-
-Default config is setup for usage with an ElephantSQL database instance, you need to provide the DB Url on the "url" key of the config.json file, key development.
-
-```json
-// config/config.json
-{
-  "development": {
-    "url": "YOUR_ELEPHANTSQL_URL_HERE",
-    "dialect": "postgres",
-    "operatorsAliases": "0"
-  },
-}
-```
-
-
-If planning to use this template with a docker database the config object should be changed to:
-
-```json
-// config/config.json
-{
-  "development": {
-    "username": "postgres",
-    "password": "secret",
-    "database": "YOUR_PROJECT_NAME_HERE_development",
-    "host": "localhost",
-    "dialect": "postgres",
-    "operatorsAliases": "0"
-  }
-}
-```
-
-And you must revert the changes on this line in models/index.js: https://github.com/Codaisseur/express-template/commit/ada7711c8b19c8f240bc61f94743213efe4a77d2#diff-18c449caa39363f82bacb4f7489e7783L15
-
-
-6. Create database, run migrations & seed data
-
-`package.json` contains a script for this
-
-```bash
-npm run initdev
-```
-
-Or run the commands seperately
-
-```bash
-npx sequelize-cli db:migrate
-npx sequelize-cli db:seed:all
-```
-
-7. start server with `nodemon` (recommended for development)
-
-```
-npm run dev
-```
-
-8. or start normally
+5. Start development server with npm start
 
 ```
 npm start
 ```
 
-## Endpoints
+## CRA docs
 
-| Method | Path                       | Purpose                             | required parameters   | auth |
-| ------ | -------------------------- | ----------------------------------- | --------------------- | ---- |
-| GET    | '/'                        | Test if your server is running      | none                  | no   |
-| POST   | '/echo'                    | Test POST requests                  | none                  | no   |
-| POST   | '/signup'                  | Create a new user and get a token   | email, name, password | no   |
-| POST   | '/login'                   | Get a token with email & password   | email, password       | no   |
-| GET    | '/me'                      | Get information of this user        | none                  | yes  |
-| POST   | '/authorized_post_request' | Test POST requests (token required) | none                  | yes  |
-
-## Sample requests with axios
-
-To demo making request to this server, some small script are included that make requests using `axios`
-
-The scripts can be found in [/sampleRequests](./sampleRequests)
-
-1. Make sure to follow the the setup in this readme first
-2. cd sampleRequests
-3. Run example requests
-
-```
-node hello.js
-node echo.js
-node signup.js
-node login.js
-node me.js
-node authorizedPost.js
-```
-
-## Sample requests with httpie
-
-To demo making request to this server, bash commands are included that make requests using `httpie`
-
-They can found in [./sampleRequests/httpie.md](./sampleRequests/httpie.md)
-
-## History of this project
-
-- [Setup of the server](https://github.com/Codaisseur/express-template/commit/cd2f790fbab6c561300163466a074fd09a35f704)
-- [Adding a README](https://github.com/Codaisseur/express-template/pull/1)
-- [Setting up the Database](https://github.com/Codaisseur/express-template/pull/2)
-- [Signup, Login & auth middleware](https://github.com/Codaisseur/express-template/pull/3)
-- [Configure cors](https://github.com/Codaisseur/express-template/pull/4)
-- [Seed using models & add delay middleware](https://github.com/Codaisseur/express-template/pull/5)
+The normal Create React App docs can be found in [CRA_DOCS.md](./CRA_DOCS.md)
