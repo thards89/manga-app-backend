@@ -5,19 +5,22 @@ const authMiddleWare = require("./auth/middleware");
 const authRouter = require("./routers/auth");
 const { PORT } = require("./config/constants");
 const mangaRouter = require("./routers/mangaRouter");
-const proxy = require('express-http-proxy');
 
 const app = express();
 
 const corsOptions = {   
-  origin: "*",   
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",   
-  allowedHeaders:
-  "Access-Control-Allow-Headers,Access-Control-Allow-Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Origin,Cache-Control,Content-Type,X-Token,X-Refresh-Token",   
-  credentials: true,   
-  preflightContinue: false,  
-  optionsSuccessStatus: 204 }
-app.options('*', cors())
+  // origin: "*",   
+  // methods: "GET,HEAD,PUT,PATCH,POST,DELETE",   
+  // allowedHeaders:
+  // "Access-Control-Allow-Headers,Access-Control-Allow-Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Origin,Cache-Control,Content-Type,X-Token,X-Refresh-Token",   
+  // credentials: true,   
+  // preflightContinue: false,  
+  // optionsSuccessStatus: 204 
+  origin:'http://localhost:3000', 
+  credentials:true,            
+  //access-control-allow-credentials:true
+  optionSuccessStatus:200}
+// app.options('*', cors())
 app.use(cors(corsOptions));
 
   
